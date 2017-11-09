@@ -7,9 +7,11 @@ public class RNSender implements Receiver{
 
 	public NetworkCard SenderNetworkCard;
 	
-	public short Address = 1234;
+	public short Adress;
 	
-	private int windowSize = 3;
+	private short m_destinationAdress;
+	
+	private int m_windowSize;
 	
 	private int lastFrameSend = 0;
 	
@@ -19,19 +21,23 @@ public class RNSender implements Receiver{
 	
 	private ArrayList<FrameSender> buffer;
 	
-	
+
 	public static void main(String[] args) {
 		
-		RNSender sender;
+		short sourceAdress = Short.parseShort(args[0]);
 		
-		short destination = 4321;
+		short destinationAdress = Short.parseShort(args[1]);
 		
-		TestData td = TestData.createTestData(0);
+		int windowSize = Integer.parseInt(args[2]);
+		
+		int testData = Integer.parseInt(args[3]);
+		
+		TestData td = TestData.createTestData(testData);
 		
 		try {
-			sender = new RNSender();
+			RNSender sender = new RNSender(sourceAdress, destinationAdress, windowSize);
 			
-			sender.send(td, 10, destination);			
+			sender.send(td);
 			
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -41,21 +47,33 @@ public class RNSender implements Receiver{
 	}
 
 	
-	public RNSender() throws IOException {
+	public RNSender(short sourceAdress, short destinationAdress, int windowSize) throws IOException {
+		this.Adress = sourceAdress;
+		this.m_destinationAdress = destinationAdress;
+		this.m_windowSize = windowSize;
+		
 		SenderNetworkCard = new NetworkCard(this);
 		buffer = new ArrayList<FrameSender>();
 	}
 	
 	
-	public void send(TestData td, int numberOfFrames, short destinationAddress) throws IOException, InterruptedException {
+	public void send(TestData td) throws IOException, InterruptedException {
 		
-		while(lastFrameSend < numberOfFrames) {
-
-			synchronized(this) {
-				while(lastFrameSend - lastFrameAck < windowSize && lastFrameSend < numberOfFrames) {
-					Frame frame = new Frame(this.Address, destinationAddress, lastFrameSend, td.getTestData(), false, lastFrameSend == numberOfFrames - 1 ? true : false);
-					FrameSender fs = new FrameSender(frame, this, timeOut);
+		byte[] data = td.getTestData();
+		
+		synchronized(this) {
+			while(data != null) {
 				
+				while(lastFrameSend < lastFrameAck + m_windowSize) {
+					Frame frame = new Frame(this.Adress, this.m_destinationAdress, lastFrameSend, data, false, false);
+					FrameSender fs = new FrameSender(frame, this, timeOut);
+					
+					data = td.getTestData();
+					
+					if(data == null) {
+						frame.Terminating = true;
+					}
+					
 					lastFrameSend++;
 					
 					buffer.add(fs);
@@ -63,10 +81,9 @@ public class RNSender implements Receiver{
 					fs.start();
 				}
 			
-				wait();
+				wait();		
 			}
-		}
-		
+		}				
 	}
 	
 	@Override
@@ -75,7 +92,9 @@ public class RNSender implements Receiver{
 		
 		synchronized(this) {
 		
-			if(ackFrame.CheckFrame() && ackFrame.DestinationAddress == this.Address && ackFrame.Acknowledge) {
+			if(ackFrame.CheckFrame() && ackFrame.DestinationAddress == this.Adress && ackFrame.SourceAddress == this.m_destinationAdress && ackFrame.Acknowledge) {
+				
+				// Terminate if the terminating acknowladge is received
 				if(ackFrame.Terminating) {
 					System.out.println(Helper.GetMilliTime() + ": Received acknowledge for terminating frame " + ackFrame.SequenceNumber);
 					System.out.println("Terminating");
