@@ -30,7 +30,7 @@ public class FrameSender extends Thread{
 	}
 	
 	public int GetSequenceNumber() {
-		return m_frame.SequenceNumber;
+		return m_frame.getSequenceNumber();
 	}
 	
 	public Frame GetFrame() {
@@ -41,12 +41,12 @@ public class FrameSender extends Thread{
 		while(Acknowledged == false) {
 			m_networkCard.send(m_frame.GetBytes());
 			
-			System.out.println(Helper.GetMilliTime() + ": Send frame " + m_frame.SequenceNumber + " to address " + m_frame.DestinationAddress);
+			System.out.println(Helper.GetMilliTime() + ": Send frame " + m_frame.getSequenceNumber() + " to address " + m_frame.getDestinationAddress());
 			
 			Thread.sleep(m_timeOut);
 			
 			if(Acknowledged == false) {
-				System.out.println(Helper.GetMilliTime() + ": Frame " + m_frame.SequenceNumber + " timed out!");
+				System.out.println(Helper.GetMilliTime() + ": Frame " + m_frame.getSequenceNumber() + " timed out!");
 			}
 			
 		}

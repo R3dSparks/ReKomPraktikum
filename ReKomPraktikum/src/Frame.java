@@ -4,62 +4,54 @@ public class Frame {
 	// Header length in 16 bit blocks
 	private static int headerLength = 6;
 
-	public short SourceAddress;
-
-	public short DestinationAddress;
-	
-	public short SequenceNumber;
-	
-	public boolean Acknowledge;
-	
-	public boolean Terminating;
-	
-	public short Checksumm = 0;
-	
-	public short PayloadLength;
-	
-	public byte[] Payload;
-	
+	private short sourceAddress;
+	private short destinationAddress;
+	private short sequenceNumber;
+	private boolean acknowledge;
+	private boolean terminating;
+	private short checksum = 0;
+	private short payloadLength;
+	private byte[] payload;
 	private boolean isValid = true;
 	
 	
 	public Frame(int sourceAddress, int destinationAddress, int sequenceNumber, byte[] payload, boolean ack, boolean term) {
-		this.SourceAddress = (short)sourceAddress;
-		this.DestinationAddress = (short)destinationAddress;
-		this.SequenceNumber = (short)sequenceNumber;
-		this.Payload = payload;
-		this.Acknowledge = ack;
-		this.Terminating = term;
-		this.PayloadLength = (short)payload.length;
+		this.sourceAddress = (short)sourceAddress;
+		this.destinationAddress = (short)destinationAddress;
+		this.sequenceNumber = (short)sequenceNumber;
+		this.payload = payload;
+		this.acknowledge = ack;
+		this.terminating = term;
+		this.payloadLength = (short)payload.length;
 		
-		Checksumm = getChecksumm();
+		this.checksum = calculateChecksum();
 	}
 	
 	public Frame(byte[] data) {
 		try {
-			SourceAddress |= (data[0] & 0x00ff) << 8;
-			SourceAddress |= data[1] & 0x00ff;
+			this.sourceAddress |= (data[0] & 0x00ff) << 8;
+			this.sourceAddress |= data[1] & 0x00ff;
 			
-			DestinationAddress |= (data[2] & 0x00ff) << 8;
-			DestinationAddress |= data[3] & 0x00ff;			
+			this.destinationAddress |= (data[2] & 0x00ff) << 8;
+			this.destinationAddress |= data[3] & 0x00ff;			
 			
-			SequenceNumber |= (data[4] & 0x00ff) << 8;
-			SequenceNumber |= data[5] & 0x00ff;
+			this.sequenceNumber |= (data[4] & 0x00ff) << 8;
+			this.sequenceNumber |= data[5] & 0x00ff;
 			
-			Acknowledge = (data[7] & 0x01) > 0;
+			this.acknowledge = (data[7] & 0x01) > 0;
 			
-			Terminating = (data[7] & 0x02) > 0;
+			this.terminating = (data[7] & 0x02) > 0;
 
-			Checksumm |= (data[8] & 0x00ff) << 8;
-			Checksumm |= data[9] & 0x00ff;
+			this.checksum |= (data[8] & 0x00ff) << 8;
+			this.checksum |= data[9] & 0x00ff;
 			
-			PayloadLength |= (data[10] & 0x00ff) << 8;
-			PayloadLength |= data[11] & 0x00ff;
+			this.payloadLength |= (data[10] & 0x00ff) << 8;
+			this.payloadLength |= data[11] & 0x00ff;
 			
-			Payload = new byte[PayloadLength];
+			this.payload = new byte[this.payloadLength];
 			
-			for(int i = 0; i < PayloadLength; i++) {
-				Payload[i] = data[headerLength * 2 + i];			
+			for(int i = 0; i < this.payloadLength; i++) {
+				this.payload[i] = data[headerLength * 2 + i];			
 			}
 		}
 		catch(Exception e) {
@@ -71,18 +63,18 @@ public class Frame {
 	private short[] getHeader() {
 		short[] header = new short[headerLength];
 		
-		header[0] = SourceAddress;
-		header[1] = DestinationAddress;
-		header[2] = SequenceNumber;
-		header[3] = (short)((Acknowledge ? 1 : 0) | (Terminating ? 1 : 0) << 1);
-		header[4] = Checksumm;
-		header[5] = (short)Payload.length;
+		header[0] = this.sourceAddress;
+		header[1] = this.destinationAddress;
+		header[2] = this.sequenceNumber;
+		header[3] = (short)((this.acknowledge ? 1 : 0) | (this.terminating ? 1 : 0) << 1);
+		header[4] = this.checksum;
+		header[5] = (short)this.payload.length;
 						
 		return header;
 		
 	}
 	
-	private short getChecksumm() {
+	private short calculateChecksum() {
 		
 		int checksumm = 0;
 		
@@ -92,8 +84,8 @@ public class Frame {
 			checksumm += header[i];
 		}
 		
-		for(int i = 0; i < Payload.length; i++) {
-			checksumm += Payload[i];
+		for(int i = 0; i < this.payload.length; i++) {
+			checksumm += this.payload[i];
 		}
 		
 		// Add overflow of short summ to checksumm
@@ -111,7 +103,7 @@ public class Frame {
 	}
 	
 	public byte[] GetBytes() {
-		byte[] frame = new byte[headerLength * 2 + Payload.length];
+		byte[] frame = new byte[headerLength * 2 + this.payload.length];
 		
 		short[] header = getHeader();
 
@@ -120,15 +112,15 @@ public class Frame {
 			frame[i * 2] = (byte)((header[i] & 0xff00) >> 8);
 		}
 		
-		for(int i = 0; i < Payload.length; i++) {
-			frame[headerLength * 2 + i] = Payload[i];
+		for(int i = 0; i < this.payload.length; i++) {
+			frame[headerLength * 2 + i] = this.payload[i];
 		}
 		
 		return frame;
 	}
 	
 	public boolean CheckFrame() {		
-		return this.isValid && getChecksumm() == 0;
+		return this.isValid && calculateChecksum() == 0;
 	}
 	
 	@Override
@@ -142,11 +134,50 @@ public class Frame {
 			temp += String.format("%16s", Integer.toHexString(header[i])).replace(" ", "0") + "\n";
 		}
 		
-		for(int i = 0; i < Payload.length; i++) {
-			temp += String.format("%16s", Integer.toHexString(Payload[i])).replace(" ", "0") + "\n";
+		for(int i = 0; i < this.payload.length; i++) {
+			temp += String.format("%16s", Integer.toHexString(this.payload[i])).replace(" ", "0") + "\n";
 		}
 		
 		return temp;
+	}
+
+	//
+	// Getter and Setter
+	//
+	
+	public short getSequenceNumber() {
+		return this.sequenceNumber;
+	}
+
+	public short getDestinationAddress() {
+		return this.destinationAddress;
+	}
+
+	public void setDestinationAddress(short destinationAddress) {
+		this.destinationAddress = destinationAddress;
+	}
+
+	public boolean isAcknowledge() {
+		return this.acknowledge;
+	}
+
+	public byte[] getPayload() {
+		return this.payload;
+	}
+	
+	public short getCheckSum(){
+		if(this.checksum == 0)
+			this.checksum = calculateChecksum();
+		
+		return this.checksum;
+	}
+
+	public boolean isTerminating() {
+		return this.terminating;
+	}
+
+	public void setTerminating(boolean terminating) {
+		this.terminating = terminating;
 	}
 
 

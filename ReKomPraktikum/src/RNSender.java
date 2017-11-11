@@ -73,7 +73,7 @@ public class RNSender implements Receiver{
 					data = td.getTestData();
 					
 					if(data == null) {
-						frame.Terminating = true;
+						frame.setTerminating(true);
 					}
 					
 					lastFrameSend++;
@@ -94,20 +94,20 @@ public class RNSender implements Receiver{
 		
 		synchronized(this) {
 		
-			if(ackFrame.CheckFrame() && ackFrame.DestinationAddress == this.m_adress && ackFrame.SourceAddress == this.m_destinationAdress && ackFrame.Acknowledge) {
+			if(ackFrame.CheckFrame() && ackFrame.getDestinationAddress() == this.m_adress && ackFrame.getSequenceNumber() == this.m_destinationAdress && ackFrame.isAcknowledge()) {
 				
 				// Terminate if the terminating acknowladge is received
-				if(ackFrame.Terminating) {
-					System.out.println(Helper.GetMilliTime() + ": Received acknowledge for terminating frame " + ackFrame.SequenceNumber);
+				if(ackFrame.isTerminating()) {
+					System.out.println(Helper.GetMilliTime() + ": Received acknowledge for terminating frame " + ackFrame.getSequenceNumber());
 					System.out.println("Terminating");
 					System.exit(0);
 				}
 				
-				System.out.println(Helper.GetMilliTime() + ": Received acknowledge for frame " + ackFrame.SequenceNumber);
-				lastFrameAck = ackFrame.SequenceNumber;
+				System.out.println(Helper.GetMilliTime() + ": Received acknowledge for frame " + ackFrame.getSequenceNumber());
+				lastFrameAck = ackFrame.getSequenceNumber();
 			
 				for(int i = 0; i < buffer.size(); i++) {
-					if(buffer.get(i).GetFrame().SequenceNumber <= lastFrameAck) {
+					if(buffer.get(i).GetFrame().getSequenceNumber() <= lastFrameAck) {
 						buffer.get(i).Acknowledged = true;
 						buffer.remove(i);
 					}

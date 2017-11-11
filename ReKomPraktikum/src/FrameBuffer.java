@@ -16,7 +16,7 @@ public class FrameBuffer {
 	
 	public boolean AddFrame(Frame frame) {
 
-		int position = frame.SequenceNumber - m_pointer;
+		int position = frame.getSequenceNumber() - m_pointer;
 		
 		if(position < m_size) {
 			m_buffer[(m_pointer + position) % m_size] = frame;
@@ -50,7 +50,7 @@ public class FrameBuffer {
 	public boolean ContainsFrame(Frame frame) {
 		
 		for(int i = 0; i < m_size; i++) {
-			if(m_buffer[i] != null && m_buffer[i].SequenceNumber == frame.SequenceNumber) {
+			if(m_buffer[i] != null && m_buffer[i].getSequenceNumber() == frame.getSequenceNumber()) {
 				return true;
 			}
 		}

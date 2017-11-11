@@ -64,42 +64,42 @@ public class RNReceiver implements Receiver{
 		
 		Frame dataFrame = new Frame(arg0);
 		
-		if(dataFrame.CheckFrame() && dataFrame.DestinationAddress == this.Adress && dataFrame.SourceAddress == m_sourceAdress) {
+		if(dataFrame.CheckFrame() && dataFrame.getDestinationAddress() == this.Adress && dataFrame.getSequenceNumber() == m_sourceAdress) {
 			
-			if(dataFrame.Terminating) {
+			if(dataFrame.isTerminating()) {
 				m_terminating = true;
 			}
 						
 			// Resending acknowledge
-			if(dataFrame.SequenceNumber <= lastFrameAcknowledged) {
+			if(dataFrame.getSequenceNumber() <= lastFrameAcknowledged) {
 				
-				Frame ackFrame = new Frame(Adress, dataFrame.SourceAddress, lastFrameAcknowledged, new byte[0], true, dataFrame.Terminating);
+				Frame ackFrame = new Frame(Adress, dataFrame.getSequenceNumber(), lastFrameAcknowledged, new byte[0], true, dataFrame.isTerminating());
 				
-				System.out.println(Helper.GetMilliTime() + ": Resending acknowledge for " + ackFrame.SequenceNumber + " to " + ackFrame.DestinationAddress);					
+				System.out.println(Helper.GetMilliTime() + ": Resending acknowledge for " + ackFrame.getSequenceNumber() + " to " + ackFrame.getDestinationAddress());					
 				
 				this.send(ackFrame);
 					
 			} else			
 			// Sending acknowledge for new frame within window size
-			if(dataFrame.SequenceNumber <= lastFrameAcknowledged + m_windowSize) {
+			if(dataFrame.getSequenceNumber() <= lastFrameAcknowledged + m_windowSize) {
 				
-				System.out.println(Helper.GetMilliTime() + ": Received frame " + dataFrame.SequenceNumber);
+				System.out.println(Helper.GetMilliTime() + ": Received frame " + dataFrame.getSequenceNumber());
 
 				m_buffer.AddFrame(dataFrame);
 				
 				Frame writeFrame = m_buffer.GetNextFrame();
 				
 				while(writeFrame != null) {
-					writeLine(writeFrame.Payload);
+					writeLine(writeFrame.getPayload());
 					lastFrameAcknowledged++;
 					writeFrame = m_buffer.GetNextFrame();
 				}
 				
-				Frame ackFrame = new Frame(Adress, dataFrame.SourceAddress, lastFrameAcknowledged, new byte[0], true, dataFrame.Terminating);
+				Frame ackFrame = new Frame(Adress, dataFrame.getSequenceNumber(), lastFrameAcknowledged, new byte[0], true, dataFrame.isTerminating());
 				
 				this.send(ackFrame);
 				
-				System.out.println(Helper.GetMilliTime() + ": Sending acknowledge for " + ackFrame.SequenceNumber + " to " + ackFrame.DestinationAddress);								
+				System.out.println(Helper.GetMilliTime() + ": Sending acknowledge for " + ackFrame.getSequenceNumber() + " to " + ackFrame.getDestinationAddress());								
 			}
 			
 			if(m_terminating) {
@@ -110,7 +110,7 @@ public class RNReceiver implements Receiver{
 		} else {
 			System.out.println(Helper.GetMilliTime() + ": Received invalid frame!");
 			try {
-				System.out.println("Sequence number: " + dataFrame.Checksumm);
+				System.out.println("Sequence number: " + dataFrame.getCheckSum());
 			} catch(Exception e) {
 				System.out.println("Can't read invalid frame");
 			}
