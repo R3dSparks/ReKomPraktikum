@@ -1,25 +1,23 @@
 
 public class FrameBuffer {
 
-	private Frame[] m_buffer;
-	
-	private int m_size;
-	
-	private int m_pointer = 0;
+	private Frame[] buffer;
+	private int size;
+	private int pointer = 0;
 	
 	
 	public FrameBuffer(int size) {
-		m_size = size;
-		m_buffer = new Frame[size];
+		this.size = size;
+		this.buffer = new Frame[size];
 	}
 	
 	
 	public boolean AddFrame(Frame frame) {
 
-		int position = frame.getSequenceNumber() - m_pointer;
+		int position = frame.getSequenceNumber() - this.pointer;
 		
-		if(position < m_size) {
-			m_buffer[(m_pointer + position) % m_size] = frame;
+		if(position < this.size) {
+			this.buffer[(this.pointer + position) % this.size] = frame;
 
 			return true;
 		}
@@ -36,12 +34,12 @@ public class FrameBuffer {
 	 */
 	public Frame GetNextFrame() {
 		
-		Frame frame = m_buffer[m_pointer % m_size];
+		Frame frame = this.buffer[this.pointer % this.size];
 		
 		if(frame != null) {
 			// Remove current Frame from the buffer and increment the pointer
-			m_buffer[m_pointer % m_size] = null;
-			m_pointer++;
+			this.buffer[this.pointer % this.size] = null;
+			this.pointer++;
 		}
 		
 		return frame;
@@ -49,8 +47,8 @@ public class FrameBuffer {
 	
 	public boolean ContainsFrame(Frame frame) {
 		
-		for(int i = 0; i < m_size; i++) {
-			if(m_buffer[i] != null && m_buffer[i].getSequenceNumber() == frame.getSequenceNumber()) {
+		for(int i = 0; i < this.size; i++) {
+			if(this.buffer[i] != null && this.buffer[i].getSequenceNumber() == frame.getSequenceNumber()) {
 				return true;
 			}
 		}
