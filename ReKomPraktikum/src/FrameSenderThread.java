@@ -2,7 +2,7 @@ import java.io.IOException;
 
 import rn.NetworkCard;
 
-public class FrameSender extends Thread{
+public class FrameSenderThread extends Thread{
 	
 	private boolean acknowledged = false;
 	private Frame frame;
@@ -11,7 +11,7 @@ public class FrameSender extends Thread{
 
 
 	
-	public FrameSender(Frame frame, NetworkCard nc, int timeOut) {
+	public FrameSenderThread(Frame frame, NetworkCard nc, int timeOut) {
 		this.frame = frame;
 		this.networkCard = nc;
 		this.timeOut = timeOut;
