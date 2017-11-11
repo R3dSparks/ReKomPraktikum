@@ -107,8 +107,8 @@ public class RNSender implements Receiver{
 				lastFrameAck = ackFrame.getSequenceNumber();
 			
 				for(int i = 0; i < buffer.size(); i++) {
-					if(buffer.get(i).GetFrame().getSequenceNumber() <= lastFrameAck) {
-						buffer.get(i).Acknowledged = true;
+					if(buffer.get(i).getFrame().getSequenceNumber() <= lastFrameAck) {
+						buffer.get(i).setAcknowledged(true);
 						buffer.remove(i);
 					}
 				}

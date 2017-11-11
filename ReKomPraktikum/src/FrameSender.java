@@ -4,18 +4,17 @@ import rn.NetworkCard;
 
 public class FrameSender extends Thread{
 	
-	public boolean Acknowledged = false;
+	private boolean acknowledged = false;
+	private Frame frame;
+	private int timeOut;
+	private NetworkCard networkCard;
 
-	private Frame m_frame;
-	
-	private int m_timeOut;
-	
-	private NetworkCard m_networkCard;
+
 	
 	public FrameSender(Frame frame, NetworkCard nc, int timeOut) {
-		this.m_frame = frame;
-		this.m_networkCard = nc;
-		this.m_timeOut = timeOut;
+		this.frame = frame;
+		this.networkCard = nc;
+		this.timeOut = timeOut;
 	}
 	
 	@Override
@@ -29,28 +28,40 @@ public class FrameSender extends Thread{
 		}
 	}
 	
-	public int GetSequenceNumber() {
-		return m_frame.getSequenceNumber();
-	}
-	
-	public Frame GetFrame() {
-		return m_frame;
-	}
-	
 	private void send() throws IOException, InterruptedException {
-		while(Acknowledged == false) {
-			m_networkCard.send(m_frame.GetBytes());
+		while(this.acknowledged == false) {
+			this.networkCard.send(this.frame.GetBytes());
 			
-			System.out.println(Helper.GetMilliTime() + ": Send frame " + m_frame.getSequenceNumber() + " to address " + m_frame.getDestinationAddress());
+			System.out.println(Helper.GetMilliTime() + ": Send frame " + this.frame.getSequenceNumber() + " to address " + this.frame.getDestinationAddress());
 			
-			Thread.sleep(m_timeOut);
+			Thread.sleep(this.timeOut);
 			
-			if(Acknowledged == false) {
-				System.out.println(Helper.GetMilliTime() + ": Frame " + m_frame.getSequenceNumber() + " timed out!");
+			if(this.acknowledged == false) {
+				System.out.println(Helper.GetMilliTime() + ": Frame " + this.frame.getSequenceNumber() + " timed out!");
 			}
 			
 		}
 
+	}
+	
+	//
+	// Getter and Setter
+	//
+
+	public boolean isAcknowledged() {
+		return this.acknowledged;
+	}
+
+	public void setAcknowledged(boolean acknowledged) {
+		this.acknowledged = acknowledged;
+	}
+	
+	public int getSequenceNumber() {
+		return this.frame.getSequenceNumber();
+	}
+	
+	public Frame getFrame() {
+		return this.frame;
 	}
 	
 }
