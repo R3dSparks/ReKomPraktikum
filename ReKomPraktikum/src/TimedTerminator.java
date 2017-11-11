@@ -1,10 +1,10 @@
 
 public class TimedTerminator extends Thread{
 	
-	private int m_timeOut;
+	private int timeOut;
 	
 	public TimedTerminator(int timeOut) {
-		this.m_timeOut = timeOut;
+		this.timeOut = timeOut;
 	}
 	
 	@Override
@@ -19,7 +19,7 @@ public class TimedTerminator extends Thread{
 	private void waitForTermination() throws InterruptedException {
 		System.out.println("Started termination timer");
 		
-		Thread.sleep(m_timeOut);
+		Thread.sleep(this.timeOut);
 		
 		System.out.println("Terminating");
 		System.exit(0);
