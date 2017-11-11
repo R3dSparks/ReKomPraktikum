@@ -5,9 +5,9 @@ import rn.*;
 
 public class RNSender implements Receiver{
 
-	public NetworkCard SenderNetworkCard;
+	private NetworkCard m_networkCard;
 	
-	public short Adress;
+	private short m_adress;
 	
 	private short m_destinationAdress;
 	
@@ -50,11 +50,11 @@ public class RNSender implements Receiver{
 
 	
 	public RNSender(short sourceAdress, short destinationAdress, int windowSize) throws IOException {
-		this.Adress = sourceAdress;
+		this.m_adress = sourceAdress;
 		this.m_destinationAdress = destinationAdress;
 		this.m_windowSize = windowSize;
 		
-		SenderNetworkCard = new NetworkCard(this);
+		m_networkCard = new NetworkCard(this);
 		buffer = new ArrayList<FrameSender>();
 	}
 	
@@ -66,9 +66,9 @@ public class RNSender implements Receiver{
 		synchronized(this) {
 			while(data != null) {
 				
-				while(lastFrameSend < lastFrameAck + m_windowSize) {
-					Frame frame = new Frame(this.Adress, this.m_destinationAdress, lastFrameSend, data, false, false);
-					FrameSender fs = new FrameSender(frame, this, timeOut);
+				while(lastFrameSend < lastFrameAck + m_windowSize && data != null) {
+					Frame frame = new Frame(this.m_adress, this.m_destinationAdress, lastFrameSend, data, false, false);
+					FrameSender fs = new FrameSender(frame, this.m_networkCard, timeOut);
 					
 					data = td.getTestData();
 					
@@ -94,7 +94,7 @@ public class RNSender implements Receiver{
 		
 		synchronized(this) {
 		
-			if(ackFrame.CheckFrame() && ackFrame.DestinationAddress == this.Adress && ackFrame.SourceAddress == this.m_destinationAdress && ackFrame.Acknowledge) {
+			if(ackFrame.CheckFrame() && ackFrame.DestinationAddress == this.m_adress && ackFrame.SourceAddress == this.m_destinationAdress && ackFrame.Acknowledge) {
 				
 				// Terminate if the terminating acknowladge is received
 				if(ackFrame.Terminating) {

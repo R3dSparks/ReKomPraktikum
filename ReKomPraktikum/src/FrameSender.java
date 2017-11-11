@@ -1,5 +1,7 @@
 import java.io.IOException;
 
+import rn.NetworkCard;
+
 public class FrameSender extends Thread{
 	
 	public boolean Acknowledged = false;
@@ -8,11 +10,11 @@ public class FrameSender extends Thread{
 	
 	private int m_timeOut;
 	
-	private RNSender m_sender;
+	private NetworkCard m_networkCard;
 	
-	public FrameSender(Frame frame, RNSender sender, int timeOut) {
+	public FrameSender(Frame frame, NetworkCard nc, int timeOut) {
 		this.m_frame = frame;
-		this.m_sender = sender;
+		this.m_networkCard = nc;
 		this.m_timeOut = timeOut;
 	}
 	
@@ -21,10 +23,8 @@ public class FrameSender extends Thread{
 		try {
 			send();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -39,7 +39,7 @@ public class FrameSender extends Thread{
 	
 	private void send() throws IOException, InterruptedException {
 		while(Acknowledged == false) {
-			m_sender.SenderNetworkCard.send(m_frame.GetBytes());
+			m_networkCard.send(m_frame.GetBytes());
 			
 			System.out.println(Helper.GetMilliTime() + ": Send frame " + m_frame.SequenceNumber + " to address " + m_frame.DestinationAddress);
 			
