@@ -37,6 +37,8 @@ public class RNSender implements Receiver{
 		try {
 			RNSender sender = new RNSender(sourceAdress, destinationAdress, windowSize);
 			
+			td.writeToFile("data.in");
+			
 			sender.send(td);
 			
 		} catch (IOException e) {

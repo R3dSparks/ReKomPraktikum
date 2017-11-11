@@ -1,5 +1,4 @@
-import java.io.BufferedWriter;
-import java.io.FileWriter;
+import java.io.FileOutputStream;
 import java.io.IOException;
 
 import rn.*;
@@ -110,38 +109,27 @@ public class RNReceiver implements Receiver{
 				
 		} else {
 			System.out.println(Helper.GetMilliTime() + ": Received invalid frame!");
+			try {
+				System.out.println("Sequence number: " + dataFrame.Checksumm);
+			} catch(Exception e) {
+				System.out.println("Can't read invalid frame");
+			}
 		}
 		
 	}
 	
 	private void writeLine(byte[] data) {
-				
-		String line = byteArrayToHexString(data);
 		
 		try {
-			FileWriter fw = new FileWriter(m_savePath, true);
-			BufferedWriter bw = new BufferedWriter(fw);
+			FileOutputStream fos = new FileOutputStream(m_savePath, true);
 			
-			bw.write(line);
+			fos.write(data);
 			
-			bw.newLine();
-			
-			bw.close();
+			fos.close();
 			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-	}
-	
-	private String byteArrayToHexString(byte[] data) {
-		String line = "";
-		
-		for(int i = 0; i < data.length; i++) {
-			line += String.format("%02x", data[i]);
-			line += " ";
-		}
-		
-		return line;
 	}
 
 }
