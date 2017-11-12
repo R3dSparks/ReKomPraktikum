@@ -25,9 +25,14 @@ public class FrameSender implements Receiver {
 		this.buffer = new ArrayList<FrameSenderThread>();
 	}
 
-	public void send(TestData td) throws IOException, InterruptedException {
+	public void send(TestData td) throws Exception {
+
+		if (td == null)
+			throw new IllegalStateException("TestData object is null. cannot run the send method.");
 
 		byte[] data = td.getTestData();
+		if (data == null)
+			throw new IllegalStateException("The data from the TestData object is null. cannot run the send method.");
 
 		synchronized (this) {
 			while (data != null) {

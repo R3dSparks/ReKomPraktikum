@@ -21,13 +21,23 @@ public class RNSender {
 			sender.send(td);
 
 		} catch (IOException e) {
-			e.printStackTrace();
+			// network card exception
+			System.out.println(String.format("There was a problem with the network card with the message: %s\n%s",
+					e.getMessage(), e.getStackTrace()));
 		} catch (InterruptedException e) {
-			e.printStackTrace();
+			// Thread exception
+			System.out.println(String.format("There was a problem with a sender thread with the message: %s\n%s",
+					e.getMessage(), e.getStackTrace()));
+		} catch (IllegalStateException e) {
+			// exception within the sender
+			System.out.println(String.format("There was a problem within the sender with the message: %s\n%s",
+					e.getMessage(), e.getStackTrace()));
 		} catch (IllegalArgumentException e) {
-			System.out.println(String.format("There was a problem with the startup arguments: %s\n%s", e.getMessage(),
-					e.getStackTrace()));
+			// startup argument exception
+			System.out.println(String.format("There was a problem with the startup arguments with the message: %s\n%s",
+					e.getMessage(), e.getStackTrace()));
 		} catch (Exception e) {
+			// unknown exception
 			System.out.println(String.format("An unexpected error occurred with the following message: %s\n%s",
 					e.getMessage(), e.getStackTrace()));
 		}
