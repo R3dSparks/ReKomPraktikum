@@ -1,6 +1,6 @@
 
 public class Frame {
-	
+
 	// Header length in 16 bit blocks
 	private static int headerLength = 6;
 
@@ -13,138 +13,161 @@ public class Frame {
 	private short payloadLength;
 	private byte[] payload;
 	private boolean isValid = true;
-	
-	
-	public Frame(int sourceAddress, int destinationAddress, int sequenceNumber, byte[] payload, boolean ack, boolean term) {
-		this.sourceAddress = (short)sourceAddress;
-		this.destinationAddress = (short)destinationAddress;
-		this.sequenceNumber = (short)sequenceNumber;
+
+	/**
+	 * create a Frame by values
+	 * 
+	 * @param sourceAddress
+	 * @param destinationAddress
+	 * @param sequenceNumber
+	 * @param payload
+	 * @param ack
+	 * @param term
+	 */
+	public Frame(int sourceAddress, int destinationAddress, int sequenceNumber, byte[] payload, boolean ack,
+			boolean term) {
+		this.sourceAddress = (short) sourceAddress;
+		this.destinationAddress = (short) destinationAddress;
+		this.sequenceNumber = (short) sequenceNumber;
 		this.payload = payload;
 		this.acknowledge = ack;
 		this.terminating = term;
-		this.payloadLength = (short)payload.length;
-		
+		this.payloadLength = (short) payload.length;
+
 		this.checksum = calculateChecksum();
 	}
-	
+
+	/**
+	 * create a Frame by Bytes
+	 * 
+	 * @param data
+	 */
 	public Frame(byte[] data) {
 		try {
 			this.sourceAddress |= (data[0] & 0x00ff) << 8;
 			this.sourceAddress |= data[1] & 0x00ff;
-			
+
 			this.destinationAddress |= (data[2] & 0x00ff) << 8;
-			this.destinationAddress |= data[3] & 0x00ff;			
-			
+			this.destinationAddress |= data[3] & 0x00ff;
+
 			this.sequenceNumber |= (data[4] & 0x00ff) << 8;
 			this.sequenceNumber |= data[5] & 0x00ff;
-			
+
 			this.acknowledge = (data[7] & 0x01) > 0;
-			
+
 			this.terminating = (data[7] & 0x02) > 0;
 
 			this.checksum |= (data[8] & 0x00ff) << 8;
 			this.checksum |= data[9] & 0x00ff;
-			
+
 			this.payloadLength |= (data[10] & 0x00ff) << 8;
 			this.payloadLength |= data[11] & 0x00ff;
-			
+
 			this.payload = new byte[this.payloadLength];
-			
-			for(int i = 0; i < this.payloadLength; i++) {
-				this.payload[i] = data[headerLength * 2 + i];			
+
+			for (int i = 0; i < this.payloadLength; i++) {
+				this.payload[i] = data[headerLength * 2 + i];
 			}
-		}
-		catch(Exception e) {
+		} catch (Exception e) {
 			this.isValid = false;
 		}
 	}
-	
-	
+
+	/**
+	 * convert a Frame into a byte array
+	 * 
+	 * @return
+	 */
+	public byte[] GetBytes() {
+		byte[] frame = new byte[headerLength * 2 + this.payload.length];
+
+		short[] header = getHeader();
+
+		for (int i = 0; i < headerLength; i++) {
+			frame[i * 2 + 1] = (byte) (header[i] & 0x00ff);
+			frame[i * 2] = (byte) ((header[i] & 0xff00) >> 8);
+		}
+
+		for (int i = 0; i < this.payload.length; i++) {
+			frame[headerLength * 2 + i] = this.payload[i];
+		}
+
+		return frame;
+	}
+
+	/**
+	 * check if the frame is valid
+	 * 
+	 * @return
+	 */
+	public boolean CheckFrame() {
+		return this.isValid && getCheckSum() == 0;
+	}
+
+	@Override
+	public String toString() {
+
+		String temp = "";
+
+		short[] header = getHeader();
+
+		for (int i = 0; i < header.length; i++) {
+			temp += String.format("%16s", Integer.toHexString(header[i])).replace(" ", "0") + "\n";
+		}
+
+		for (int i = 0; i < this.payload.length; i++) {
+			temp += String.format("%16s", Integer.toHexString(this.payload[i])).replace(" ", "0") + "\n";
+		}
+
+		return temp;
+	}
+
 	private short[] getHeader() {
 		short[] header = new short[headerLength];
-		
+
 		header[0] = this.sourceAddress;
 		header[1] = this.destinationAddress;
 		header[2] = this.sequenceNumber;
-		header[3] = (short)((this.acknowledge ? 1 : 0) | (this.terminating ? 1 : 0) << 1);
+		header[3] = (short) ((this.acknowledge ? 1 : 0) | (this.terminating ? 1 : 0) << 1);
 		header[4] = this.checksum;
-		header[5] = (short)this.payload.length;
-						
+		header[5] = (short) this.payload.length;
+
 		return header;
-		
+
 	}
-	
+
 	private short calculateChecksum() {
-		
+
 		int checksumm = 0;
-		
-		short[] header = getHeader();
-		
-		for(int i = 0; i < header.length; i++) {
-			checksumm += header[i];
-		}
-		
-		for(int i = 0; i < this.payload.length; i++) {
-			checksumm += this.payload[i];
-		}
-		
-		// Add overflow of short summ to checksumm
-		while((checksumm & 0xffff0000) != 0) {
-			int overflow = ((checksumm & 0xffff0000) >> 16) & 0x0000ffff;
-		
-			checksumm = checksumm & 0x0000ffff;
-			
-			checksumm += overflow;
-		}
-				
-		checksumm ^= 0x0000ffff;
-		
-		return (short)checksumm;
-	}
-	
-	public byte[] GetBytes() {
-		byte[] frame = new byte[headerLength * 2 + this.payload.length];
-		
+
 		short[] header = getHeader();
 
-		for(int i = 0; i < headerLength; i++) {
-			frame[i * 2 + 1] = (byte)(header[i] & 0x00ff);
-			frame[i * 2] = (byte)((header[i] & 0xff00) >> 8);
+		for (int i = 0; i < header.length; i++) {
+			checksumm += header[i];
 		}
-		
-		for(int i = 0; i < this.payload.length; i++) {
-			frame[headerLength * 2 + i] = this.payload[i];
+
+		for (int i = 0; i < this.payload.length; i++) {
+			checksumm += this.payload[i];
 		}
-		
-		return frame;
-	}
-	
-	public boolean CheckFrame() {		
-		return this.isValid && calculateChecksum() == 0;
-	}
-	
-	@Override
-	public String toString() {
-		
-		String temp = "";
-		
-		short[] header = getHeader();
-		
-		for(int i = 0; i < header.length; i++) {
-			temp += String.format("%16s", Integer.toHexString(header[i])).replace(" ", "0") + "\n";
+
+		// Add overflow of short summ to checksumm
+		while ((checksumm & 0xffff0000) != 0) {
+			int overflow = ((checksumm & 0xffff0000) >> 16) & 0x0000ffff;
+
+			checksumm = checksumm & 0x0000ffff;
+
+			checksumm += overflow;
 		}
-		
-		for(int i = 0; i < this.payload.length; i++) {
-			temp += String.format("%16s", Integer.toHexString(this.payload[i])).replace(" ", "0") + "\n";
-		}
-		
-		return temp;
+
+		checksumm ^= 0x0000ffff;
+
+		return (short) checksumm;
 	}
 
 	//
 	// Getter and Setter
 	//
-	
+
 	public short getSequenceNumber() {
 		return this.sequenceNumber;
 	}
@@ -164,11 +187,11 @@ public class Frame {
 	public byte[] getPayload() {
 		return this.payload;
 	}
-	
-	public short getCheckSum(){
-		if(this.checksum == 0)
+
+	public short getCheckSum() {
+		if (this.checksum == 0)
 			this.checksum = calculateChecksum();
-		
+
 		return this.checksum;
 	}
 
@@ -179,8 +202,5 @@ public class Frame {
 	public void setTerminating(boolean terminating) {
 		this.terminating = terminating;
 	}
-
-
-
 
 }
