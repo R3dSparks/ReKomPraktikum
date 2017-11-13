@@ -36,31 +36,30 @@ public class FrameReceiver implements Receiver {
 	@Override
 	public void receive(byte[] arg0) {
 
-		// check parameters
+		// Check parameters
 		if (parametrsAreValid(arg0) == false)
 			return;
 
-		// clean terminator and read frame data
+		// Clean terminator and read frame data
 		cleanUpTerminator();
 		Frame dataFrame = new Frame(arg0);
 
-		// check if the frame is valid
+		// Check if the frame is valid
 		if (receivedFrameIsValid(dataFrame) == false)
 			return;
 
-		// TODO soll das wirklich so sein? geht nicht auch folgendes:
-		// this.terminating = dataFrame.isTerminating();
-		if (dataFrame.isTerminating()) {
+		// Set terminating flag true if received frame is terminating and is the last frame to be acknowledged
+		if (dataFrame.isTerminating() && dataFrame.getSequenceNumber() == this.lastFrameAcknowledged + 1) {
 			this.terminating = true;
 		}
 
 		// Resending acknowledge
 		if (dataFrame.getSequenceNumber() <= this.lastFrameAcknowledged) {
 
-			Frame ackFrame = new Frame(this.adress, dataFrame.getSequenceNumber(), this.lastFrameAcknowledged,
-					new byte[0], true, dataFrame.isTerminating());
+			Frame ackFrame = new Frame(this.adress, this.sourceAdress, this.lastFrameAcknowledged,
+					new byte[0], true, this.terminating);
 
-			System.out.println(Helper.GetMilliTime() + ": Resending acknowledge for " + ackFrame.getSequenceNumber()
+			System.out.println(Helper.GetMilliTime() + ": Resending acknowledge for frame " + ackFrame.getSequenceNumber()
 					+ " to " + ackFrame.getDestinationAddress());
 
 			this.send(ackFrame);
@@ -69,10 +68,11 @@ public class FrameReceiver implements Receiver {
 		// Sending acknowledge for new frame within window size
 		if (dataFrame.getSequenceNumber() <= this.lastFrameAcknowledged + this.windowSize) {
 
-			System.out.println(Helper.GetMilliTime() + ": this.Received frame " + dataFrame.getSequenceNumber());
+			System.out.println(Helper.GetMilliTime() + ": Received frame " + dataFrame.getSequenceNumber());
 
 			this.buffer.AddFrame(dataFrame);
 
+			// Get the next frame that is to be written
 			Frame writeFrame = this.buffer.GetNextFrame();
 
 			while (writeFrame != null) {
@@ -81,8 +81,8 @@ public class FrameReceiver implements Receiver {
 				writeFrame = this.buffer.GetNextFrame();
 			}
 
-			Frame ackFrame = new Frame(this.adress, dataFrame.getSequenceNumber(), this.lastFrameAcknowledged,
-					new byte[0], true, dataFrame.isTerminating());
+			Frame ackFrame = new Frame(this.adress, this.sourceAdress, this.lastFrameAcknowledged,
+					new byte[0], true, this.terminating);
 
 			this.send(ackFrame);
 
@@ -112,26 +112,26 @@ public class FrameReceiver implements Receiver {
 	}
 
 	/**
-	 * check if the input parameters for the receive method are valid
+	 * Check if the input parameters for the receive method are valid
 	 * 
 	 * @param arg0
 	 * @return
 	 */
 	private boolean parametrsAreValid(byte[] arg0) {
 		if (arg0 == null) {
-			System.out.println("The received data is null. cannot process any further");
+			System.out.println("The received data is null. Cannot process any further");
 			return false;
 		}
 
 		if (arg0.length == 0) {
-			System.out.println("The received data length is 0. cannot process any further");
+			System.out.println("The received data length is 0. Cannot process any further");
 			return false;
 		}
 		return true;
 	}
 
 	/**
-	 * if the terminator is not null, then interrupt it and set it to null
+	 * If the terminator is not null, then interrupt it and set it to null
 	 */
 	private void cleanUpTerminator() {
 		if (this.terminator != null) {
@@ -141,23 +141,25 @@ public class FrameReceiver implements Receiver {
 	}
 
 	/**
-	 * check if the received frame is valid
+	 * Check if the received frame is valid
 	 * 
 	 * @param dataFrame
 	 * @return
 	 */
 	private boolean receivedFrameIsValid(Frame dataFrame) {
-		if (dataFrame.CheckFrame() && dataFrame.getDestinationAddress() == this.adress
-				&& dataFrame.getSequenceNumber() == this.sourceAdress) {
-			System.out.println(Helper.GetMilliTime() + ": Received invalid frame!");
-			try {
-				System.out.println("Sequence number: " + dataFrame.getCheckSum());
-			} catch (Exception e) {
-				System.out.println("Can't read invalid frame");
-			}
-			return false;
+		// Return true if frame is valid, the destination address is correct and the acknowledge flag is false 
+		if (dataFrame.isValid() && dataFrame.getDestinationAddress() == this.adress && dataFrame.isAcknowledge() == false) {
+			return true;
 		}
-		return true;
+		
+		// If the frame is not valid, try to print its checksum
+		System.out.print(Helper.GetMilliTime() + ": Received invalid frame. ");
+		try {
+			System.out.println("Checksum: " + dataFrame.getCheckSum());
+		} catch (Exception e) {
+			System.out.println("Can't read invalid frame");
+		}
+		return false;
 	}
 
 }

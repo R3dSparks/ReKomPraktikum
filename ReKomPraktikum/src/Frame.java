@@ -15,7 +15,7 @@ public class Frame {
 	private boolean isValid = true;
 
 	/**
-	 * create a Frame by values
+	 * Create a Frame by values
 	 * 
 	 * @param sourceAddress
 	 * @param destinationAddress
@@ -24,8 +24,7 @@ public class Frame {
 	 * @param ack
 	 * @param term
 	 */
-	public Frame(int sourceAddress, int destinationAddress, int sequenceNumber, byte[] payload, boolean ack,
-			boolean term) {
+	public Frame(int sourceAddress, int destinationAddress, int sequenceNumber, byte[] payload, boolean ack, boolean term) {
 		this.sourceAddress = (short) sourceAddress;
 		this.destinationAddress = (short) destinationAddress;
 		this.sequenceNumber = (short) sequenceNumber;
@@ -38,7 +37,7 @@ public class Frame {
 	}
 
 	/**
-	 * create a Frame by Bytes
+	 * Create a Frame by Bytes
 	 * 
 	 * @param data
 	 */
@@ -68,6 +67,12 @@ public class Frame {
 			for (int i = 0; i < this.payloadLength; i++) {
 				this.payload[i] = data[headerLength * 2 + i];
 			}
+			
+			if(this.payload.length != this.payloadLength)
+				this.isValid = false;
+				
+			this.checksum = calculateChecksum();
+			
 		} catch (Exception e) {
 			this.isValid = false;
 		}
@@ -93,15 +98,6 @@ public class Frame {
 		}
 
 		return frame;
-	}
-
-	/**
-	 * check if the frame is valid
-	 * 
-	 * @return
-	 */
-	public boolean CheckFrame() {
-		return this.isValid && getCheckSum() == 0;
 	}
 
 	@Override
@@ -143,14 +139,14 @@ public class Frame {
 		short[] header = getHeader();
 
 		for (int i = 0; i < header.length; i++) {
-			checksumm += header[i];
+			checksumm += header[i] & 0x0000ffff;
 		}
 
 		for (int i = 0; i < this.payload.length; i++) {
-			checksumm += this.payload[i];
+			checksumm += this.payload[i] & 0x000000ff;
 		}
 
-		// Add overflow of short summ to checksumm
+		// Add overflow of short sum to checksum
 		while ((checksumm & 0xffff0000) != 0) {
 			int overflow = ((checksumm & 0xffff0000) >> 16) & 0x0000ffff;
 
@@ -163,7 +159,25 @@ public class Frame {
 
 		return (short) checksumm;
 	}
+	
+	/**
+	 * Returns whether this frame is valid or not
+	 * 
+	 * @return
+	 */
+	public boolean isValid() {
+		if(this.isValid == false) {
+			return false;
+		}
+		
+		return this.checksum == 0;
+	}
 
+	public void recalculateChecksum() {
+		this.checksum = 0;
+		this.checksum = calculateChecksum();
+	}
+	
 	//
 	// Getter and Setter
 	//
@@ -189,9 +203,6 @@ public class Frame {
 	}
 
 	public short getCheckSum() {
-		if (this.checksum == 0)
-			this.checksum = calculateChecksum();
-
 		return this.checksum;
 	}
 

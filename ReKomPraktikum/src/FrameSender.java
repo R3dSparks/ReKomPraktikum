@@ -46,6 +46,7 @@ public class FrameSender implements Receiver {
 
 					if (data == null) {
 						frame.setTerminating(true);
+						frame.recalculateChecksum();
 					}
 
 					this.lastFrameSend++;
@@ -63,37 +64,51 @@ public class FrameSender implements Receiver {
 	@Override
 	public void receive(byte[] arg0) {
 		Frame ackFrame = new Frame(arg0);
+		
+		if(receivedFrameIsValid(ackFrame) == false) {
+			return;
+		}
 
 		synchronized (this) {
 
-			if (ackFrame.CheckFrame() && ackFrame.getDestinationAddress() == this.address
-					&& ackFrame.getSequenceNumber() == this.destinationAddress && ackFrame.isAcknowledge()) {
+			// Terminate if the terminating acknowledge is received                                                               
+			if (ackFrame.isTerminating()) {
+				System.out.println(Helper.GetMilliTime() + ": Received acknowledge for terminating frame " + ackFrame.getSequenceNumber());
+				System.out.println("Terminating");
+				System.exit(0);
+			}
 
-				// Terminate if the terminating acknowladge is received
-				if (ackFrame.isTerminating()) {
-					System.out.println(Helper.GetMilliTime() + ": Received acknowledge for terminating frame "
-							+ ackFrame.getSequenceNumber());
-					System.out.println("Terminating");
-					System.exit(0);
+			System.out.println(Helper.GetMilliTime() + ": Received acknowledge for frame " + ackFrame.getSequenceNumber());
+			
+			this.lastFrameAck = ackFrame.getSequenceNumber();
+
+			for (int i = 0; i < buffer.size(); i++) {
+				if (this.buffer.get(i).getFrame().getSequenceNumber() <= this.lastFrameAck) {
+					this.buffer.get(i).setAcknowledged(true);
+					this.buffer.remove(i);
 				}
-
-				System.out.println(
-						Helper.GetMilliTime() + ": Received acknowledge for frame " + ackFrame.getSequenceNumber());
-				this.lastFrameAck = ackFrame.getSequenceNumber();
-
-				for (int i = 0; i < buffer.size(); i++) {
-					if (this.buffer.get(i).getFrame().getSequenceNumber() <= this.lastFrameAck) {
-						this.buffer.get(i).setAcknowledged(true);
-						this.buffer.remove(i);
-					}
-				}
-
-			} else {
-				System.out.println(Helper.GetMilliTime() + ": Received invalid frame");
 			}
 
 			notify();
+			
 		}
+
+	}
+	
+	private boolean receivedFrameIsValid(Frame frame) {
+		if(frame.isValid() && frame.getDestinationAddress() == this.address && frame.isAcknowledge() == true) {
+			return true;
+		}
+		
+		// If the frame is not valid, try to print its checksum
+		System.out.print(Helper.GetMilliTime() + ": Received invalid frame. ");
+		try {
+			System.out.println("Checksum: " + frame.getCheckSum());
+		} catch (Exception e) {
+			System.out.println("Can't read invalid frame");
+		}
+		
+		return false;
 	}
 
 }
