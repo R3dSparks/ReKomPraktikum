@@ -71,14 +71,13 @@ public class RNSender {
 		if (Helper.tryParseInt(args[3]) == false)
 			throw new IllegalArgumentException(
 					"The test data argument is not a number or the size is too big (between –2.147.483.648 and 2.147.483.647). Its used as test data.");
-	
-		if(Integer.parseInt(args[2]) < 1)
+
+		if (Integer.parseInt(args[2]) < 1)
+			throw new IllegalArgumentException("The window size has to be at least 1.");
+
+		if (Integer.parseInt(args[3]) < 0 || Integer.parseInt(args[3]) > 1)
 			throw new IllegalArgumentException(
-					"The window size has to be at least 1.");
-		
-		if(Integer.parseInt(args[3]) < 1 || Integer.parseInt(args[3]) > 2)
-			throw new IllegalArgumentException(
-					"Illegal argument for test data. The only valid test data id's are 1 or 2.");
+					"Illegal argument for test data. The only valid test data id's are 0 or 1.");
 	}
 
 }
