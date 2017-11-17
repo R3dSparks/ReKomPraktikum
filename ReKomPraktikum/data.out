@@ -1,0 +1,322 @@
+Aufgabe 1 - Allgemeines über Netzwerkea) Nennen Sie möglichst viele physikalische Medien, um Rechner miteinander zu verbinden.
+b) Nennen Sie möglichst viele Computer-Anwendungen aus ihrem täglichen Leben, die eine 
+Netzwerkverbindung erfordern.
+c) Stellen Sie möglichst viele Netzwerk-Technologien auf unterschiedlichen Schichten zusammen. 
+Versuchen Sie, diese zu Gruppen zusammenzufassen.
+d) Warum kann man nicht einfach alle Rechner weltweit über ein einzelnes Medium miteinander 
+verbinden?
+e) Welche Geräte kennen Sie, die im Rahmen von Computer-Netzwerken eingesetzt werden?
+
+Aufgabe 2 - Netzwerkfunktionen
+a) Eine Netzwerkverbindung zwischen Rechnern muss viele verschiedene Funktionen ausführen. 
+Versuchen Sie, möglichst viele zusammenzustellen.
+b) Stellen Sie dar, wie diese Funktionen auf 'Datenübertragungen' bei folgenden Alltagsbeispielen 
+ausgeführt werden. In diesen Beispielen werden nicht immer alle oben genannte Funktionen benötigt.
+- Versenden von Briefen
+- Versenden von Rauchzeichen
+- Gleichzeitige Unterhaltungen auf einer Party
+
+Aufgabe 3 - Der optische Telegraf
+Einführende Erklärungen
+Eine der ältesten größeren Datenverbindungen in Deutschland war die optische Telegrafenlinie 
+Berlin-Koblenz (1823-1849). Obwohl uns diese Art der Datenübertragung mittlerweile sehr antiquiert
+vorkommen dürfte, gibt es dennoch einige Parallelen zu heutigen Netzwerken. Die Eigenschaften der 
+Telegrafenlinie:
+- Es gab 61 Stationen im Abstand von ca. 10 km, die eine Kette bildeten.
+- Jede Station war im Sichtkontakt zu den beiden Nachbarstationen.
+- Pro Station standen 6 Flügel mit je 4 Positionen zur Kodierung zur Verfügung.
+einem Flügelpaar. Für alle mögliche Kombinationen (auch solche, die keine Einzelziffer 
+beschreiben), gab es eine bestimmte Bedeutung, die aber nur den Telegrafen-Beamten der Endpunkte 
+bekannt war.
+Aufgabe
+a) Angenommen, man kann alle 10 s eine neue Flügeleinstellung vornehmen. Wie viele Bits pro 
+Sekunde können übertragen werden?
+b) Angenommen, jede Station benötigt 1 min für die Weiterleitung. Wie groß ist die 
+Ende-zu-Ende-Verzögerung?
+c) Wie wurden die in Aufgabe 2 (Seite 1) gefundenen Funktionen realisiert?
+
+Aufgabe 4 - Broadcast-Systeme
+Die Datenübertragung kann auch in einer Richtung erfolgen. Broadcast-Systeme versenden 
+unidirektional Daten an eine große Menge von Empfängern, ohne dass diese auf Transmissionen 
+antworten können. 
+a) Zählen Sie möglichst viele Systeme auf, die nach diesem Prinzip arbeiten.
+b) Welche Funktion ist bei Broadcast-Systemen, welche bei herkömmlichen Netzwerken einfacher.
+
+Aufgabe 5 - Drahtlose Netzwerke
+a) Tragen Sie möglichst viele Unterschiede zwischen kabelbasierten und drahtlosen Netzwerken 
+zusammen.
+b) Tragen Sie möglichst viele Unterschiede zwischen der Infrarot- und Funk-ßbertragung zusammen.
+
+Aufgabe 6 - Referenzmodelle
+Beantworten Sie die folgenden Fragen stichwortartig:
+a) Nennen Sie die sieben Schichten des OSI-Referenzmodells.
+b) Nennen Sie Beispiele dafür, was durch die Bitübertragungsschicht festgelegt wird.
+c) In der Sicherungsschicht des OSI-Referenzmodells: Auf welche prinzipielle Arten können 
+ßbertragungen gesichert werden?
+d) Welche OSI-Schichten werden von IEEE 802 abgedeckt?
+e) Wie werden die Schichten von IEEE 802 genannt?
+f) Welche Schichten umfasst das TCP/IP-Referenzmodell?
+g) Nennen Sie drei Internetprotokolle der Anwendungsschicht.
+h) Nennen Sie Beispiele für die unterschiedlichen Adressen auf den vier Schichten des Internets.
+Aufgabe 1 - Allgemeines über Netzwerkea) Nennen Sie möglichst viele physikalische Medien, um Rechner miteinander zu verbinden.
+b) Nennen Sie möglichst viele Computer-Anwendungen aus ihrem täglichen Leben, die eine 
+Netzwerkverbindung erfordern.
+c) Stellen Sie möglichst viele Netzwerk-Technologien auf unterschiedlichen Schichten zusammen. 
+Versuchen Sie, diese zu Gruppen zusammenzufassen.
+d) Warum kann man nicht einfach alle Rechner weltweit über ein einzelnes Medium miteinander 
+verbinden?
+e) Welche Geräte kennen Sie, die im Rahmen von Computer-Netzwerken eingesetzt werden?
+
+Aufgabe 2 - Netzwerkfunktionen
+a) Eine Netzwerkverbindung zwischen Rechnern muss viele verschiedene Funktionen ausführen. 
+Versuchen Sie, möglichst viele zusammenzustellen.
+b) Stellen Sie dar, wie diese Funktionen auf 'Datenübertragungen' bei folgenden Alltagsbeispielen 
+ausgeführt werden. In diesen Beispielen werden nicht immer alle oben genannte Funktionen benötigt.
+- Versenden von Briefen
+- Versenden von Rauchzeichen
+- Gleichzeitige Unterhaltungen auf einer Party
+
+Aufgabe 3 - Der optische Telegraf
+Einführende Erklärungen
+Eine der ältesten größeren Datenverbindungen in Deutschland war die optische Telegrafenlinie 
+Berlin-Koblenz (1823-1849). Obwohl uns diese Art der Datenübertragung mittlerweile sehr antiquiert
+vorkommen dürfte, gibt es dennoch einige Parallelen zu heutigen Netzwerken. Die Eigenschaften der 
+Telegrafenlinie:
+- Es gab 61 Stationen im Abstand von ca. 10 km, die eine Kette bildeten.
+- Jede Station war im Sichtkontakt zu den beiden Nachbarstationen.
+- Pro Station standen 6 Flügel mit je 4 Positionen zur Kodierung zur Verfügung.
+einem Flügelpaar. Für alle mögliche Kombinationen (auch solche, die keine Einzelziffer 
+beschreiben), gab es eine bestimmte Bedeutung, die aber nur den Telegrafen-Beamten der Endpunkte 
+bekannt war.
+Aufgabe
+a) Angenommen, man kann alle 10 s eine neue Flügeleinstellung vornehmen. Wie viele Bits pro 
+Sekunde können übertragen werden?
+b) Angenommen, jede Station benötigt 1 min für die Weiterleitung. Wie groß ist die 
+Ende-zu-Ende-Verzögerung?
+c) Wie wurden die in Aufgabe 2 (Seite 1) gefundenen Funktionen realisiert?
+
+Aufgabe 4 - Broadcast-Systeme
+Die Datenübertragung kann auch in einer Richtung erfolgen. Broadcast-Systeme versenden 
+unidirektional Daten an eine große Menge von Empfängern, ohne dass diese auf Transmissionen 
+antworten können. 
+a) Zählen Sie möglichst viele Systeme auf, die nach diesem Prinzip arbeiten.
+b) Welche Funktion ist bei Broadcast-Systemen, welche bei herkömmlichen Netzwerken einfacher.
+
+Aufgabe 5 - Drahtlose Netzwerke
+a) Tragen Sie möglichst viele Unterschiede zwischen kabelbasierten und drahtlosen Netzwerken 
+zusammen.
+b) Tragen Sie möglichst viele Unterschiede zwischen der Infrarot- und Funk-ßbertragung zusammen.
+
+Aufgabe 6 - Referenzmodelle
+Beantworten Sie die folgenden Fragen stichwortartig:
+a) Nennen Sie die sieben Schichten des OSI-Referenzmodells.
+b) Nennen Sie Beispiele dafür, was durch die Bitübertragungsschicht festgelegt wird.
+c) In der Sicherungsschicht des OSI-Referenzmodells: Auf welche prinzipielle Arten können 
+ßbertragungen gesichert werden?
+d) Welche OSI-Schichten werden von IEEE 802 abgedeckt?
+e) Wie werden die Schichten von IEEE 802 genannt?
+f) Welche Schichten umfasst das TCP/IP-Referenzmodell?
+g) Nennen Sie drei Internetprotokolle der Anwendungsschicht.
+h) Nennen Sie Beispiele für die unterschiedlichen Adressen auf den vier Schichten des Internets.
+Aufgabe 1 - Allgemeines über Netzwerkea) Nennen Sie möglichst viele physikalische Medien, um Rechner miteinander zu verbinden.
+b) Nennen Sie möglichst viele Computer-Anwendungen aus ihrem täglichen Leben, die eine 
+Netzwerkverbindung erfordern.
+c) Stellen Sie möglichst viele Netzwerk-Technologien auf unterschiedlichen Schichten zusammen. 
+Versuchen Sie, diese zu Gruppen zusammenzufassen.
+d) Warum kann man nicht einfach alle Rechner weltweit über ein einzelnes Medium miteinander 
+verbinden?
+e) Welche Geräte kennen Sie, die im Rahmen von Computer-Netzwerken eingesetzt werden?
+
+Aufgabe 2 - Netzwerkfunktionen
+a) Eine Netzwerkverbindung zwischen Rechnern muss viele verschiedene Funktionen ausführen. 
+Versuchen Sie, möglichst viele zusammenzustellen.
+b) Stellen Sie dar, wie diese Funktionen auf 'Datenübertragungen' bei folgenden Alltagsbeispielen 
+ausgeführt werden. In diesen Beispielen werden nicht immer alle oben genannte Funktionen benötigt.
+- Versenden von Briefen
+- Versenden von Rauchzeichen
+- Gleichzeitige Unterhaltungen auf einer Party
+
+Aufgabe 3 - Der optische Telegraf
+Einführende Erklärungen
+Eine der ältesten größeren Datenverbindungen in Deutschland war die optische Telegrafenlinie 
+Berlin-Koblenz (1823-1849). Obwohl uns diese Art der Datenübertragung mittlerweile sehr antiquiert
+vorkommen dürfte, gibt es dennoch einige Parallelen zu heutigen Netzwerken. Die Eigenschaften der 
+Telegrafenlinie:
+- Es gab 61 Stationen im Abstand von ca. 10 km, die eine Kette bildeten.
+- Jede Station war im Sichtkontakt zu den beiden Nachbarstationen.
+- Pro Station standen 6 Flügel mit je 4 Positionen zur Kodierung zur Verfügung.
+einem Flügelpaar. Für alle mögliche Kombinationen (auch solche, die keine Einzelziffer 
+beschreiben), gab es eine bestimmte Bedeutung, die aber nur den Telegrafen-Beamten der Endpunkte 
+bekannt war.
+Aufgabe
+a) Angenommen, man kann alle 10 s eine neue Flügeleinstellung vornehmen. Wie viele Bits pro 
+Sekunde können übertragen werden?
+b) Angenommen, jede Station benötigt 1 min für die Weiterleitung. Wie groß ist die 
+Ende-zu-Ende-Verzögerung?
+c) Wie wurden die in Aufgabe 2 (Seite 1) gefundenen Funktionen realisiert?
+
+Aufgabe 4 - Broadcast-Systeme
+Die Datenübertragung kann auch in einer Richtung erfolgen. Broadcast-Systeme versenden 
+unidirektional Daten an eine große Menge von Empfängern, ohne dass diese auf Transmissionen 
+antworten können. 
+a) Zählen Sie möglichst viele Systeme auf, die nach diesem Prinzip arbeiten.
+b) Welche Funktion ist bei Broadcast-Systemen, welche bei herkömmlichen Netzwerken einfacher.
+
+Aufgabe 5 - Drahtlose Netzwerke
+a) Tragen Sie möglichst viele Unterschiede zwischen kabelbasierten und drahtlosen Netzwerken 
+zusammen.
+b) Tragen Sie möglichst viele Unterschiede zwischen der Infrarot- und Funk-ßbertragung zusammen.
+
+Aufgabe 6 - Referenzmodelle
+Beantworten Sie die folgenden Fragen stichwortartig:
+a) Nennen Sie die sieben Schichten des OSI-Referenzmodells.
+b) Nennen Sie Beispiele dafür, was durch die Bitübertragungsschicht festgelegt wird.
+c) In der Sicherungsschicht des OSI-Referenzmodells: Auf welche prinzipielle Arten können 
+ßbertragungen gesichert werden?
+d) Welche OSI-Schichten werden von IEEE 802 abgedeckt?
+e) Wie werden die Schichten von IEEE 802 genannt?
+f) Welche Schichten umfasst das TCP/IP-Referenzmodell?
+g) Nennen Sie drei Internetprotokolle der Anwendungsschicht.
+h) Nennen Sie Beispiele für die unterschiedlichen Adressen auf den vier Schichten des Internets.
+Aufgabe 1 - Allgemeines über Netzwerkea) Nennen Sie möglichst viele physikalische Medien, um Rechner miteinander zu verbinden.
+b) Nennen Sie möglichst viele Computer-Anwendungen aus ihrem täglichen Leben, die eine 
+Netzwerkverbindung erfordern.
+c) Stellen Sie möglichst viele Netzwerk-Technologien auf unterschiedlichen Schichten zusammen. 
+Versuchen Sie, diese zu Gruppen zusammenzufassen.
+d) Warum kann man nicht einfach alle Rechner weltweit über ein einzelnes Medium miteinander 
+verbinden?
+e) Welche Geräte kennen Sie, die im Rahmen von Computer-Netzwerken eingesetzt werden?
+
+Aufgabe 2 - Netzwerkfunktionen
+a) Eine Netzwerkverbindung zwischen Rechnern muss viele verschiedene Funktionen ausführen. 
+Versuchen Sie, möglichst viele zusammenzustellen.
+b) Stellen Sie dar, wie diese Funktionen auf 'Datenübertragungen' bei folgenden Alltagsbeispielen 
+ausgeführt werden. In diesen Beispielen werden nicht immer alle oben genannte Funktionen benötigt.
+- Versenden von Briefen
+- Versenden von Rauchzeichen
+- Gleichzeitige Unterhaltungen auf einer Party
+
+Aufgabe 3 - Der optische Telegraf
+Einführende Erklärungen
+Eine der ältesten größeren Datenverbindungen in Deutschland war die optische Telegrafenlinie 
+Berlin-Koblenz (1823-1849). Obwohl uns diese Art der Datenübertragung mittlerweile sehr antiquiert
+vorkommen dürfte, gibt es dennoch einige Parallelen zu heutigen Netzwerken. Die Eigenschaften der 
+Telegrafenlinie:
+- Es gab 61 Stationen im Abstand von ca. 10 km, die eine Kette bildeten.
+- Jede Station war im Sichtkontakt zu den beiden Nachbarstationen.
+- Pro Station standen 6 Flügel mit je 4 Positionen zur Kodierung zur Verfügung.
+einem Flügelpaar. Für alle mögliche Kombinationen (auch solche, die keine Einzelziffer 
+beschreiben), gab es eine bestimmte Bedeutung, die aber nur den Telegrafen-Beamten der Endpunkte 
+bekannt war.
+Aufgabe
+a) Angenommen, man kann alle 10 s eine neue Flügeleinstellung vornehmen. Wie viele Bits pro 
+Sekunde können übertragen werden?
+b) Angenommen, jede Station benötigt 1 min für die Weiterleitung. Wie groß ist die 
+Ende-zu-Ende-Verzögerung?
+c) Wie wurden die in Aufgabe 2 (Seite 1) gefundenen Funktionen realisiert?
+
+Aufgabe 4 - Broadcast-Systeme
+Die Datenübertragung kann auch in einer Richtung erfolgen. Broadcast-Systeme versenden 
+unidirektional Daten an eine große Menge von Empfängern, ohne dass diese auf Transmissionen 
+antworten können. 
+a) Zählen Sie möglichst viele Systeme auf, die nach diesem Prinzip arbeiten.
+b) Welche Funktion ist bei Broadcast-Systemen, welche bei herkömmlichen Netzwerken einfacher.
+
+Aufgabe 5 - Drahtlose Netzwerke
+a) Tragen Sie möglichst viele Unterschiede zwischen kabelbasierten und drahtlosen Netzwerken 
+zusammen.
+b) Tragen Sie möglichst viele Unterschiede zwischen der Infrarot- und Funk-ßbertragung zusammen.
+
+Aufgabe 6 - Referenzmodelle
+Beantworten Sie die folgenden Fragen stichwortartig:
+a) Nennen Sie die sieben Schichten des OSI-Referenzmodells.
+b) Nennen Sie Beispiele dafür, was durch die Bitübertragungsschicht festgelegt wird.
+c) In der Sicherungsschicht des OSI-Referenzmodells: Auf welche prinzipielle Arten können 
+ßbertragungen gesichert werden?
+d) Welche OSI-Schichten werden von IEEE 802 abgedeckt?
+e) Wie werden die Schichten von IEEE 802 genannt?
+f) Welche Schichten umfasst das TCP/IP-Referenzmodell?
+g) Nennen Sie drei Internetprotokolle der Anwendungsschicht.
+h) Nennen Sie Beispiele für die unterschiedlichen Adressen auf den vier Schichten des Internets.
+Aufgabe 1 - Allgemeines über Netzwerkea) Nennen Sie möglichst viele physikalische Medien, um Rechner miteinander zu verbinden.
+b) Nennen Sie möglichst viele Computer-Anwendungen aus ihrem täglichen Leben, die eine 
+Netzwerkverbindung erfordern.
+c) Stellen Sie möglichst viele Netzwerk-Technologien auf unterschiedlichen Schichten zusammen. 
+Versuchen Sie, diese zu Gruppen zusammenzufassen.
+d) Warum kann man nicht einfach alle Rechner weltweit über ein einzelnes Medium miteinander 
+verbinden?
+e) Welche Geräte kennen Sie, die im Rahmen von Computer-Netzwerken eingesetzt werden?
+
+Aufgabe 2 - Netzwerkfunktionen
+a) Eine Netzwerkverbindung zwischen Rechnern muss viele verschiedene Funktionen ausführen. 
+Versuchen Sie, möglichst viele zusammenzustellen.
+b) Stellen Sie dar, wie diese Funktionen auf 'Datenübertragungen' bei folgenden Alltagsbeispielen 
+ausgeführt werden. In diesen Beispielen werden nicht immer alle oben genannte Funktionen benötigt.
+- Versenden von Briefen
+- Versenden von Rauchzeichen
+- Gleichzeitige Unterhaltungen auf einer Party
+
+Aufgabe 3 - Der optische Telegraf
+Einführende Erklärungen
+Eine der ältesten größeren Datenverbindungen in Deutschland war die optische Telegrafenlinie 
+Berlin-Koblenz (1823-1849). Obwohl uns diese Art der Datenübertragung mittlerweile sehr antiquiert
+vorkommen dürfte, gibt es dennoch einige Parallelen zu heutigen Netzwerken. Die Eigenschaften der 
+Telegrafenlinie:
+- Es gab 61 Stationen im Abstand von ca. 10 km, die eine Kette bildeten.
+- Jede Station war im Sichtkontakt zu den beiden Nachbarstationen.
+- Pro Station standen 6 Flügel mit je 4 Positionen zur Kodierung zur Verfügung.
+einem Flügelpaar. Für alle mögliche Kombinationen (auch solche, die keine Einzelziffer 
+beschreiben), gab es eine bestimmte Bedeutung, die aber nur den Telegrafen-Beamten der Endpunkte 
+bekannt war.
+Aufgabe
+a) Angenommen, man kann alle 10 s eine neue Flügeleinstellung vornehmen. Wie viele Bits pro 
+Sekunde können übertragen werden?
+b) Angenommen, jede Station benötigt 1 min für die Weiterleitung. Wie groß ist die 
+Ende-zu-Ende-Verzögerung?
+c) Wie wurden die in Aufgabe 2 (Seite 1) gefundenen Funktionen realisiert?
+
+Aufgabe 4 - Broadcast-Systeme
+Die Datenübertragung kann auch in einer Richtung erfolgen. Broadcast-Systeme versenden 
+unidirektional Daten an eine große Menge von Empfängern, ohne dass diese auf Transmissionen 
+antworten können. 
+a) Zählen Sie möglichst viele Systeme auf, die nach diesem Prinzip arbeiten.
+b) Welche Funktion ist bei Broadcast-Systemen, welche bei herkömmlichen Netzwerken einfacher.
+
+Aufgabe 5 - Drahtlose Netzwerke
+a) Tragen Sie möglichst viele Unterschiede zwischen kabelbasierten und drahtlosen Netzwerken 
+zusammen.
+b) Tragen Sie möglichst viele Unterschiede zwischen der Infrarot- und Funk-ßbertragung zusammen.
+
+Aufgabe 6 - Referenzmodelle
+Beantworten Sie die folgenden Fragen stichwortartig:
+a) Nennen Sie die sieben Schichten des OSI-Referenzmodells.
+b) Nennen Sie Beispiele dafür, was durch die Bitübertragungsschicht festgelegt wird.
+c) In der Sicherungsschicht des OSI-Referenzmodells: Auf welche prinzipielle Arten können 
+ßbertragungen gesichert werden?
+d) Welche OSI-Schichten werden von IEEE 802 abgedeckt?
+e) Wie werden die Schichten von IEEE 802 genannt?
+f) Welche Schichten umfasst das TCP/IP-Referenzmodell?
+g) Nennen Sie drei Internetprotokolle der Anwendungsschicht.
+h) Nennen Sie Beispiele für die unterschiedlichen Adressen auf den vier Schichten des Internets.
+Aufgabe 1 - Allgemeines über Netzwerkea) Nennen Sie möglichst viele physikalische Medien, um Rechner miteinander zu verbinden.
+b) Nennen Sie möglichst viele Computer-Anwendungen aus ihrem täglichen Leben, die eine 
+Netzwerkverbindung erfordern.
+c) Stellen Sie möglichst viele Netzwerk-Technologien auf unterschiedlichen Schichten zusammen. 
+Versuchen Sie, diese zu Gruppen zusammenzufassen.
+d) Warum kann man nicht einfach alle Rechner weltweit über ein einzelnes Medium miteinander 
+verbinden?
+e) Welche Geräte kennen Sie, die im Rahmen von Computer-Netzwerken eingesetzt werden?
+
+Aufgabe 2 - Netzwerkfunktionen
+a) Eine Netzwerkverbindung zwischen Rechnern muss viele verschiedene Funktionen ausführen. 
+Versuchen Sie, möglichst viele zusammenzustellen.
+b) Stellen Sie dar, wie diese Funktionen auf 'Datenübertragungen' bei folgenden Alltagsbeispielen 
+ausgeführt werden. In diesen Beispielen werden nicht immer alle oben genannte Funktionen benötigt.
+- Versenden von Briefen
+- Versenden von Rauchzeichen
+- Gleichzeitige Unterhaltungen auf einer Party
+
+Aufgabe 3 - Der optische Telegraf
+Einführende Erklärungen
+Eine der ältesten größeren Datenverbindungen in Deutschland war die optische Telegrafenlinie 
+Berlin-Koblenz (1823-1849). Obwohl uns diese Art der Datenübertragung mittlerweile sehr antiquiert

@@ -21,7 +21,7 @@ public class RNSender {
 			sender.send(td);
 
 		} catch (IOException e) {
-			// network card exception
+			// Network card exception
 			System.out.println(String.format("There was a problem with the network card with the message: %s\n%s",
 					e.getMessage(), e.getStackTrace()));
 		} catch (InterruptedException e) {
@@ -29,15 +29,15 @@ public class RNSender {
 			System.out.println(String.format("There was a problem with a sender thread with the message: %s\n%s",
 					e.getMessage(), e.getStackTrace()));
 		} catch (IllegalStateException e) {
-			// exception within the sender
+			// Exception within the sender
 			System.out.println(String.format("There was a problem within the sender with the message: %s\n%s",
 					e.getMessage(), e.getStackTrace()));
 		} catch (IllegalArgumentException e) {
-			// startup argument exception
+			// Startup argument exception
 			System.out.println(String.format("There was a problem with the startup arguments with the message: %s\n%s",
 					e.getMessage(), e.getStackTrace()));
 		} catch (Exception e) {
-			// unknown exception
+			// Unknown exception
 			System.out.println(String.format("An unexpected error occurred with the following message: %s\n%s",
 					e.getMessage(), e.getStackTrace()));
 		}
@@ -56,23 +56,29 @@ public class RNSender {
 		if (args.length < 4)
 			throw new IllegalArgumentException("There must be at least 4 startup arguments for this sender to run.");
 
-		if (Helper.tryParceShort(args[0]) == false)
+		if (Helper.tryParseShort(args[0]) == false)
 			throw new IllegalArgumentException(
-					"The first startup argument is not a number or the size is too big (between -32.768 and 32.767). Its used as a a source address");
+					"The source address argument is not a number or the size is too big (between -32.768 and 32.767). Its used as a a source address");
 
-		if (Helper.tryParceShort(args[1]) == false)
+		if (Helper.tryParseShort(args[1]) == false)
 			throw new IllegalArgumentException(
-					"The second startup argument is not a number or the size is too big (between -32.768 and 32.767). Its used as a destination address");
+					"The destination address argument is not a number or the size is too big (between -32.768 and 32.767). Its used as a destination address");
 
-		if (Helper.tryParceInt(args[2]) == false)
+		if (Helper.tryParseInt(args[2]) == false)
 			throw new IllegalArgumentException(
-					"The third startup argument is not a number or the size is too big (between –2.147.483.648 and 2.147.483.647). Its used for the window size.");
+					"The window size argument is not a number or the size is too big (between –2.147.483.648 and 2.147.483.647). Its used for the window size.");
 
-		if (Helper.tryParceInt(args[3]) == false)
+		if (Helper.tryParseInt(args[3]) == false)
 			throw new IllegalArgumentException(
-					"The fourth startup argument is not a number or the size is too big (between –2.147.483.648 and 2.147.483.647). Its used as test data.");
-		// TODO
-		// gescheite beschreibung von der letzten exception
+					"The test data argument is not a number or the size is too big (between –2.147.483.648 and 2.147.483.647). Its used as test data.");
+	
+		if(Integer.parseInt(args[2]) < 1)
+			throw new IllegalArgumentException(
+					"The window size has to be at least 1.");
+		
+		if(Integer.parseInt(args[3]) < 1 || Integer.parseInt(args[3]) > 2)
+			throw new IllegalArgumentException(
+					"Illegal argument for test data. The only valid test data id's are 1 or 2.");
 	}
 
 }

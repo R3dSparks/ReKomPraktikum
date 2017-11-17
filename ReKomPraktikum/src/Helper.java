@@ -1,4 +1,3 @@
-
 public final class Helper {
 
 	private static long baseTime = System.currentTimeMillis();
@@ -6,7 +5,7 @@ public final class Helper {
 	private Helper() {
 
 	}
-
+	
 	public static String GetMilliTime() {
 		return String.valueOf(System.currentTimeMillis() - baseTime);
 	}
@@ -18,7 +17,7 @@ public final class Helper {
 	 *            check if this string is a valid short
 	 * @return
 	 */
-	public static boolean tryParceShort(String strShort) {
+	public static boolean tryParseShort(String strShort) {
 		try {
 			Short.parseShort(strShort);
 		} catch (NumberFormatException e) {
@@ -34,7 +33,7 @@ public final class Helper {
 	 *            check if this string is a valid integer
 	 * @return
 	 */
-	public static boolean tryParceInt(String strInt) {
+	public static boolean tryParseInt(String strInt) {
 		try {
 			Integer.parseInt(strInt);
 		} catch (NumberFormatException e) {

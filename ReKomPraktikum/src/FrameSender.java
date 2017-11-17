@@ -1,4 +1,6 @@
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 
 import rn.NetworkCard;
@@ -31,6 +33,7 @@ public class FrameSender implements Receiver {
 			throw new IllegalStateException("TestData object is null. cannot run the send method.");
 
 		byte[] data = td.getTestData();
+		
 		if (data == null)
 			throw new IllegalStateException("The data from the TestData object is null. cannot run the send method.");
 
@@ -38,26 +41,30 @@ public class FrameSender implements Receiver {
 			while (data != null) {
 
 				while (this.lastFrameSend < this.lastFrameAck + this.windowSize && data != null) {
-					Frame frame = new Frame(this.address, this.destinationAddress, this.lastFrameSend, data, false,
-							false);
-					FrameSenderThread fs = new FrameSenderThread(frame, this.networkCard, this.timeOut);
+					Frame frame = new Frame(this.address, this.destinationAddress, this.lastFrameSend, data, false, false);
+					FrameSenderThread fst = new FrameSenderThread(frame, this.networkCard, this.timeOut);
 
 					data = td.getTestData();
 
-					if (data == null) {
-						frame.setTerminating(true);
-						frame.recalculateChecksum();
-					}
-
 					this.lastFrameSend++;
 
-					this.buffer.add(fs);
+					this.buffer.add(fst);
 
-					fs.start();
+					fst.start();
 				}
 
 				wait();
 			}
+			
+			// Send terminating frame after data frames
+			Frame frame = new Frame(this.address, this.destinationAddress, this.lastFrameSend, new byte[0], false, true);
+			FrameSenderThread fst = new FrameSenderThread(frame, this.networkCard, this.timeOut);
+			
+			this.lastFrameSend++;
+			
+			this.buffer.add(fst);
+			
+			fst.start();
 		}
 	}
 
@@ -75,6 +82,13 @@ public class FrameSender implements Receiver {
 			if (ackFrame.isTerminating()) {
 				System.out.println(Helper.GetMilliTime() + ": Received acknowledge for terminating frame " + ackFrame.getSequenceNumber());
 				System.out.println("Terminating");
+				
+				if(checkForEquality() == true) {
+					System.out.println("Output file is correct");
+				} else {
+					System.out.println("Output file is false");
+				}
+				
 				System.exit(0);
 			}
 
@@ -91,6 +105,29 @@ public class FrameSender implements Receiver {
 
 			notify();
 			
+		}
+
+	}
+	
+	private boolean checkForEquality() {
+		
+		try {
+			byte[] input = Files.readAllBytes(Paths.get("data.in"));
+			byte[] output = Files.readAllBytes(Paths.get("data.out"));
+			
+			if(input.length != output.length)
+				return false;
+			
+			for(int i = 0; i < input.length; i++) {
+				if(input[i] !=  output[i])
+					return false;
+			}
+			
+			return true;
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+			return false;
 		}
 
 	}

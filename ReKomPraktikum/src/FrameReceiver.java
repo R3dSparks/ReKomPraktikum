@@ -5,7 +5,7 @@ import rn.NetworkCard;
 import rn.Receiver;
 
 public class FrameReceiver implements Receiver {
-
+	
 	private NetworkCard nc;
 	private short adress;
 	private short sourceAdress;
@@ -35,22 +35,29 @@ public class FrameReceiver implements Receiver {
 
 	@Override
 	public void receive(byte[] arg0) {
-
+		
 		// Check parameters
 		if (parametrsAreValid(arg0) == false)
 			return;
 
-		// Clean terminator and read frame data
+		// Read frame data			
 		cleanUpTerminator();
 		Frame dataFrame = new Frame(arg0);
 
 		// Check if the frame is valid
-		if (receivedFrameIsValid(dataFrame) == false)
+		if (receivedFrameIsValid(dataFrame) == false) {
+			if (this.terminating) {
+				this.terminator = new TimedTerminator(1000);
+				this.terminator.start();
+			}
+			
 			return;
+		}				
 
 		// Set terminating flag true if received frame is terminating and is the last frame to be acknowledged
 		if (dataFrame.isTerminating() && dataFrame.getSequenceNumber() == this.lastFrameAcknowledged + 1) {
 			this.terminating = true;
+			this.lastFrameAcknowledged++;
 		}
 
 		// Resending acknowledge
@@ -67,48 +74,72 @@ public class FrameReceiver implements Receiver {
 		} else
 		// Sending acknowledge for new frame within window size
 		if (dataFrame.getSequenceNumber() <= this.lastFrameAcknowledged + this.windowSize) {
+			
+			if(dataFrame.isTerminating() == true) {
+				System.out.println(Helper.GetMilliTime() + ": Received terminating frame");
+			} else {
+				System.out.println(Helper.GetMilliTime() + ": Received frame " + dataFrame.getSequenceNumber());
 
-			System.out.println(Helper.GetMilliTime() + ": Received frame " + dataFrame.getSequenceNumber());
+				this.buffer.AddFrame(dataFrame);
 
-			this.buffer.AddFrame(dataFrame);
+				// Get the next frame that is to be written
+				Frame writeFrame = this.buffer.GetNextFrame();
 
-			// Get the next frame that is to be written
-			Frame writeFrame = this.buffer.GetNextFrame();
-
-			while (writeFrame != null) {
-				writeLine(writeFrame.getPayload());
-				this.lastFrameAcknowledged++;
-				writeFrame = this.buffer.GetNextFrame();
+				while (writeFrame != null) {
+					writeLine(writeFrame.getPayload());
+					this.lastFrameAcknowledged++;
+					writeFrame = this.buffer.GetNextFrame();
+				}
 			}
-
+			
 			Frame ackFrame = new Frame(this.adress, this.sourceAdress, this.lastFrameAcknowledged,
 					new byte[0], true, this.terminating);
 
 			this.send(ackFrame);
 
-			System.out.println(Helper.GetMilliTime() + ": Sending acknowledge for " + ackFrame.getSequenceNumber()
-					+ " to " + ackFrame.getDestinationAddress());
+			if(this.terminating == true) {
+				System.out.println(Helper.GetMilliTime() + ": Sending termination to " + ackFrame.getDestinationAddress());
+			} else {
+				System.out.println(Helper.GetMilliTime() + ": Sending acknowledge for " + ackFrame.getSequenceNumber()
+				+ " to " + ackFrame.getDestinationAddress());
+			}
+			
 		}
 
 		if (this.terminating) {
 			this.terminator = new TimedTerminator(1000);
 			this.terminator.start();
 		}
-
+		
 	}
 
 	private void writeLine(byte[] data) {
+		
+		FileOutputStream fos = null;
+		boolean success = false;
+		
+		while(success == false) {
+			try {
+				fos = new FileOutputStream(this.savePath, true);
+				
+				fos.write(data);
+				
+			} catch (IOException e) {
+				System.out.println("Failed to write to output. Trying again.");
+			} finally {
+				if(fos != null) {
+					try {
+						fos.close();
+					} catch (IOException e) {
+						System.out.println("Closing output stream failed");
+					}	
+				}
 
-		try {
-			FileOutputStream fos = new FileOutputStream(this.savePath, true);
-
-			fos.write(data);
-
-			fos.close();
-
-		} catch (IOException e) {
-			e.printStackTrace();
+				success = true;
+			}		
 		}
+		
+		
 	}
 
 	/**
